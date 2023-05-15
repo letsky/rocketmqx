@@ -11,7 +11,7 @@ const items = AppConfig.region.map(item => {
   return {
     title: item.name,
     value: item.regionId,
-    to: {name: "instance", params: item}
+    to: {name: "instance", params: {regionId: item.regionId}}
   }
 })
 
@@ -26,7 +26,7 @@ const menus = ref(items)
 
       <v-navigation-drawer>
         <v-list>
-          <v-list-item v-for="item in menus" :key="item.value" :to="to">
+          <v-list-item v-for="item in menus" :key="item.value" :to="item.to">
             <v-list-item-content>
               <v-list-title>{{ item.title }}</v-list-title>
             </v-list-item-content>
@@ -35,7 +35,7 @@ const menus = ref(items)
       </v-navigation-drawer>
 
       <v-main style="min-height: 300px;">
-        <router-view />
+        <router-view :key="$route.path" />
       </v-main>
     </v-layout>
   </v-card>

@@ -30,6 +30,8 @@
             </tr>
         </tbody>
     </v-table>
+
+    <CreateTopic></CreateTopic>
 </template>
 
 <script setup>
@@ -37,7 +39,7 @@ import { useRoute, useRouter } from 'vue-router';
 import AppConfig from '../app.config';
 import { inject, ref } from 'vue';
 import { mdiArrowLeft, mdiMagnify, mdiPlus } from '@mdi/js';
-
+import CreateTopic from './CreateTopic.vue';
 
 const axios = inject("axios")
 const route = useRoute();
