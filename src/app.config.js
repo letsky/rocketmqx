@@ -43,9 +43,16 @@ const MessageType = [
     { name: "定时/延时消息", value: 5 }
 ];
 
+// convert to map
+const MessageTypeMap = {};
+MessageType.forEach(item => {
+    MessageTypeMap[item.value] = item.name;
+});
+
 
 
 export default {
     region: Region,
-    messageType: MessageType
+    messageType: MessageType,
+    messageTypeMap: MessageTypeMap
 }

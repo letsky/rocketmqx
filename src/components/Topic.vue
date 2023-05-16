@@ -4,7 +4,7 @@
             <v-btn icon @click="onLeftClick">
                 <v-icon :icon="mdiArrowLeft"></v-icon>
             </v-btn>
-            <v-toolbar-title>Title</v-toolbar-title>
+            <v-toolbar-title>{{ instanceId }}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="onCreateTopicClick">
                 <v-icon :icon="mdiPlus"></v-icon>
@@ -16,17 +16,21 @@
         <thead>
             <tr>
                 <th class="text-left">
-                    实例ID
+                    Topic
                 </th>
                 <th class="text-left">
                     备注
                 </th>
+                <th class="text-left">消息类型</th>
+                <th class="text-left">创建时间</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="item in data" :key="item.instanceId">
-                <td>{{ item.instanceId }}</td>
+                <td>{{ item.topic }}</td>
                 <td>{{ item.remark }}</td>
+                <td>{{ item.messageTypeName }}</td>
+                <td>{{ item.createTime }}</td>
             </tr>
         </tbody>
     </v-table>
@@ -55,6 +59,9 @@ const router = useRouter();
 const regionId = route.params.regionId;
 const instanceId = route.params.instanceId;
 const regionInfo = AppConfig.region.find(e => e.regionId === regionId);
+const messageTypeMap = AppConfig.messageTypeMap;
+
+console.log("messageTypeMap:", messageTypeMap)
 
 const data = ref([])
 const dialogParams = ref({
@@ -73,23 +80,15 @@ const getTopicList = () => axios.get('/mq/topic/show', {
         return {
             instanceId: item.InstanceId,
             messageType: item.MessageType,
-            remark: item.Remark
+            messageTypeName: messageTypeMap[item.MessageType],
+            remark: item.Remark,
+            topic: item.Topic,
+            createTime: item.CreateTime
         }
     })
+
+    console.log("TopicList:", data.value)
 })
-
-const createTopic = (topicName, remark, messageType, endpoint, instanceIds) => {
-
-    axios.post("/mq/create/topic", {
-        "topicName": topicName,
-        "messageType": messageType,
-
-
-        "remark": remark,
-        "endpoint": endpoint,
-        "instanceId": instanceIds
-    })
-}
 
 const onLeftClick = () => {
     router.go(-1)
