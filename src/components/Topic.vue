@@ -31,7 +31,15 @@
         </tbody>
     </v-table>
 
-    <CreateTopic></CreateTopic>
+    <CreateTopic 
+        :open="dialogParams.open"
+        :instanceDisabled="true"
+        :region-id="dialogParams.regionId"
+        @close-click="onDialogCloseClick"
+        @confirm-click="onDialogSubmitClick"
+        :selected-instance-ids="dialogParams.selectedInstanceIds"
+        @on-instance-change="onInstanceChange"
+    />
 </template>
 
 <script setup>
@@ -49,6 +57,14 @@ const instanceId = route.params.instanceId;
 const regionInfo = AppConfig.region.find(e => e.regionId === regionId);
 
 const data = ref([])
+const dialogParams = ref({
+    open: false,
+    regionId: regionId,
+    topicName: "",
+    remark: "",
+    selectedInstanceIds: [instanceId],
+    messageType: 0
+})
 
 const getTopicList = () => axios.get('/mq/topic/show', {
     params: { endpoint: regionInfo.endpoint, instanceId: instanceId }
@@ -62,12 +78,57 @@ const getTopicList = () => axios.get('/mq/topic/show', {
     })
 })
 
+const createTopic = (topicName, remark, messageType, endpoint, instanceIds) => {
+
+    axios.post("/mq/create/topic", {
+        "topicName": topicName,
+        "messageType": messageType,
+
+
+        "remark": remark,
+        "endpoint": endpoint,
+        "instanceId": instanceIds
+    })
+}
+
 const onLeftClick = () => {
     router.go(-1)
 }
 
 const onCreateTopicClick = () => {
     console.log("create")
+    dialogParams.value.open = true
+}
+
+const onDialogCloseClick = () => {
+    dialogParams.value.open = false
+}
+
+const onDialogSubmitClick = (params) => {
+    console.log(params)
+    axios.post("/mq/create/topic", {
+        "topicName": params.topicName,
+        "messageType": params.messageType,
+        "remark": params.topicName,
+        "endpoint": regionInfo.endpoint,
+        "instanceId": params.selectedInstanceIds
+    }).then(response => {
+        //http status code == 200
+        const reponseStatus = response.status
+        const code = response.data.code
+        if (reponseStatus == 200 && code == 200) {
+            getTopicList()
+            dialogParams.value.open = false
+        } else {
+            console.log("create topic error: ", response)   
+        }
+    });
+    
+}
+
+const onInstanceChange = (newValue) => {
+    console.log("parent changed: " + newValue)
+    dialogParams.value.selectedInstanceIds = newValue
 }
 
 getTopicList()
