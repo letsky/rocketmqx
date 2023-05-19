@@ -3,7 +3,6 @@
 
 import { ref } from 'vue';
 import AppConfig from './app.config';
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 
 console.log(AppConfig)
 
@@ -34,9 +33,15 @@ const menus = ref(items)
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="min-height: 300px;">
+      <v-main class="container">
         <router-view :key="$route.path" />
       </v-main>
     </v-layout>
   </v-card>
 </template>
+
+<style lang="css" scoped>
+  .container {
+    max-height: 100%;
+  }
+</style>
