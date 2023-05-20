@@ -47,9 +47,10 @@
 <script setup>
 import { inject, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import AppConfig from '../app.config';
+import AppConfig from '@/app.config';
 import { mdiPlus } from '@mdi/js';
-import CreateTopic from '../components/CreateTopic.vue';
+import CreateTopic from '@/components/CreateTopic.vue';
+import {getRocketMQInstanceList} from '@/api/js/instance';
 
 const axios = inject("axios")
 const route = useRoute();
@@ -69,9 +70,7 @@ const dialogParams = ref({
     messageType: 0
 })
 
-const getInstanceList = () => axios.get('/mq/instance/list', {
-    params: { endpoint: regionInfo.endpoint }
-}).then(response => {
+const getInstanceList = () => getRocketMQInstanceList(regionInfo.endpoint).then(response => {
     data.value = response.data.map(item => {
         return {
             instanceId: item.InstanceId,

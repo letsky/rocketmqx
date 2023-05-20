@@ -2,7 +2,7 @@
 // This starter template is using Vue 3 <script setup> SFCs
 
 import { ref } from 'vue';
-import AppConfig from './app.config';
+import AppConfig from '@/app.config';
 
 console.log(AppConfig)
 
