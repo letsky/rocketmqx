@@ -1,7 +1,7 @@
 <template>
     <v-card color="grey-lighten-4" flat>
         <v-toolbar>
-            <v-toolbar-title>{{ regionInfo.name }}</v-toolbar-title>
+            <v-toolbar-title :text="regionInfo.name"/>
             <v-spacer></v-spacer>
             <v-btn icon @click="onCreateTopicClick">
                 <v-icon :icon="mdiPlus"></v-icon>
@@ -49,7 +49,7 @@ import { inject, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import AppConfig from '../app.config';
 import { mdiPlus } from '@mdi/js';
-import CreateTopic from './CreateTopic.vue';
+import CreateTopic from '../components/CreateTopic.vue';
 
 const axios = inject("axios")
 const route = useRoute();

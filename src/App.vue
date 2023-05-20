@@ -42,6 +42,6 @@ const menus = ref(items)
 
 <style lang="css" scoped>
   .container {
-    max-height: 100%;
+    height: 100vh;
   }
 </style>

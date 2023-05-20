@@ -1,8 +1,8 @@
 import * as VueRouter from "vue-router";
 import App from "./App.vue";
 import Greet from "./components/Greet.vue";
-import Instance from "./components/Instance.vue";
-import Topic from "./components/Topic.vue";
+import Instance from "./pages/Instance.vue";
+import Topic from "./pages/Topic.vue";
 import AppConfig from "./app.config.js";
 
 const routes = [
