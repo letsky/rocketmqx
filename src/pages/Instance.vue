@@ -5,9 +5,9 @@
         <v-btn :prepend-icon="mdiPlus" @click="onCreateTopicClick">
             创建Topic
         </v-btn>
-        <v-btn :prepend-icon="mdiPlus" @click="">
+        <!-- <v-btn :prepend-icon="mdiPlus" @click="">
             创建Group
-        </v-btn>
+        </v-btn> -->
     </v-toolbar>
     <v-table fixed-header>
         <thead>
