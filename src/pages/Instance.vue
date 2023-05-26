@@ -1,20 +1,21 @@
 <template>
-    <v-card color="grey-lighten-4" flat>
-        <v-toolbar>
-            <v-toolbar-title :text="regionInfo.name"/>
-            <v-spacer></v-spacer>
-            <v-btn icon @click="onCreateTopicClick">
-                <v-icon :icon="mdiPlus"></v-icon>
-            </v-btn>
-        </v-toolbar>
-    </v-card>
+    <v-toolbar>
+        <v-toolbar-title :text="regionInfo.name" />
+        <v-spacer></v-spacer>
+        <v-btn :prepend-icon="mdiPlus" @click="onCreateTopicClick">
+            创建Topic
+        </v-btn>
+        <v-btn :prepend-icon="mdiPlus" @click="">
+            创建Group
+        </v-btn>
+    </v-toolbar>
     <v-table fixed-header>
         <thead>
             <tr>
-                <th class="text-left">
+                <th>
                     实例ID
                 </th>
-                <th class="text-left">
+                <th>
                     实例名称
                 </th>
                 <th>查看</th>
@@ -33,15 +34,11 @@
         </tbody>
     </v-table>
 
-    <CreateTopic 
-        :open="dialogParams.open"
-        :instanceDisabled="false"
-        :region-id="dialogParams.regionId"
-        @close-click="onDialogCloseClick"
-        @confirm-click="onDialogSubmitClick"
-        :selected-instance-ids="dialogParams.selectedInstanceIds"
-        @on-instance-change="onInstanceChange"
-    />
+
+
+    <CreateTopic :open="dialogParams.open" :instanceDisabled="false" :region-id="dialogParams.regionId"
+        @close-click="onDialogCloseClick" @confirm-click="onDialogSubmitClick"
+        :selected-instance-ids="dialogParams.selectedInstanceIds" @on-instance-change="onInstanceChange" />
 </template>
 
 <script setup>
@@ -50,7 +47,7 @@ import { useRoute } from 'vue-router';
 import AppConfig from '@/app.config';
 import { mdiPlus } from '@mdi/js';
 import CreateTopic from '@/components/CreateTopic.vue';
-import {getRocketMQInstanceList} from '@/api/js/instance';
+import { getRocketMQInstanceList } from '@/api/js/instance';
 
 const axios = inject("axios")
 const route = useRoute();
@@ -104,10 +101,10 @@ const onDialogSubmitClick = (params) => {
             getInstanceList()
             dialogParams.value.open = false
         } else {
-            console.log("create topic error: ", response)   
+            console.log("create topic error: ", response)
         }
     });
-    
+
 }
 
 const onInstanceChange = (newValue) => {

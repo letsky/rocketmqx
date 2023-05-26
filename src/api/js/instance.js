@@ -6,3 +6,8 @@ export async function getRocketMQInstanceList(endpoint) {
   });
 }
 
+export async function getRocketMQTopicList(endpoint, instanceId) {
+  return await service.get("/mq/topic/show", {
+    params: { endpoint: endpoint, instanceId: instanceId },
+  });
+}

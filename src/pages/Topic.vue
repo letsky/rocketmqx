@@ -1,16 +1,14 @@
 <template>
-    <v-card color="grey-lighten-4" flat>
-        <v-toolbar>
-            <v-btn icon @click="onLeftClick">
-                <v-icon :icon="mdiArrowLeft"></v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ instanceId }}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon @click="onCreateTopicClick">
-                <v-icon :icon="mdiPlus"></v-icon>
-            </v-btn>
-        </v-toolbar>
-    </v-card>
+    <v-toolbar>
+        <v-btn icon @click="onLeftClick">
+            <v-icon :icon="mdiArrowLeft"></v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ instanceId }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn :prepend-icon="mdiPlus" @click="onCreateTopicClick">
+            创建Topic
+        </v-btn>
+    </v-toolbar>
 
     <v-table fixed-header>
         <thead>
@@ -30,20 +28,14 @@
                 <td>{{ item.topic }}</td>
                 <td>{{ item.remark }}</td>
                 <td>{{ item.messageTypeName }}</td>
-                <td>{{ item.createTime }}</td>
+                <td>{{ formatTimestamp(item.createTime) }}</td>
             </tr>
         </tbody>
     </v-table>
 
-    <CreateTopic 
-        :open="dialogParams.open"
-        :instanceDisabled="true"
-        :region-id="dialogParams.regionId"
-        @close-click="onDialogCloseClick"
-        @confirm-click="onDialogSubmitClick"
-        :selected-instance-ids="dialogParams.selectedInstanceIds"
-        @on-instance-change="onInstanceChange"
-    />
+    <CreateTopic :open="dialogParams.open" :instanceDisabled="true" :region-id="dialogParams.regionId"
+        @close-click="onDialogCloseClick" @confirm-click="onDialogSubmitClick"
+        :selected-instance-ids="dialogParams.selectedInstanceIds" @on-instance-change="onInstanceChange" />
 </template>
 
 <script setup>
@@ -52,6 +44,8 @@ import AppConfig from '@/app.config';
 import { inject, ref } from 'vue';
 import { mdiArrowLeft, mdiMagnify, mdiPlus } from '@mdi/js';
 import CreateTopic from '@/components/CreateTopic.vue';
+import { formatTimestamp } from '../utils/date';
+import { getRocketMQTopicList } from '@/api/js/instance';
 
 const axios = inject("axios")
 const route = useRoute();
@@ -73,9 +67,7 @@ const dialogParams = ref({
     messageType: 0
 })
 
-const getTopicList = () => axios.get('/mq/topic/show', {
-    params: { endpoint: regionInfo.endpoint, instanceId: instanceId }
-}).then(response => {
+const getTopicList = () => getRocketMQTopicList(regionInfo.endpoint, instanceId).then(response => {
     data.value = response.data.map(item => {
         return {
             instanceId: item.InstanceId,
@@ -119,10 +111,10 @@ const onDialogSubmitClick = (params) => {
             getTopicList()
             dialogParams.value.open = false
         } else {
-            console.log("create topic error: ", response)   
+            console.log("create topic error: ", response)
         }
     });
-    
+
 }
 
 const onInstanceChange = (newValue) => {

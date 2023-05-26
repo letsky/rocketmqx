@@ -12,6 +12,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
     "axios": "^1.4.0",
+    "dayjs": "^1.11.7",
     "vue": "^3.2.45",
     "vue-axios": "^3.5.2",
     "vue-router": "4",
