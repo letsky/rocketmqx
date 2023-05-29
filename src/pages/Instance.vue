@@ -90,7 +90,7 @@ const onDialogSubmitClick = (params) => {
     axios.post("/mq/create/topic", {
         "topicName": params.topicName,
         "messageType": params.messageType,
-        "remark": params.topicName,
+        "remark": params.remark,
         "endpoint": regionInfo.endpoint,
         "instanceId": params.selectedInstanceIds
     }).then(response => {
